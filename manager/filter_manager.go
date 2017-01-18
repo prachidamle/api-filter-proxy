@@ -5,8 +5,10 @@ import (
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/rancher/api-filter-proxy/filters"
-	//to register all filters
+	//to register http filter
 	_ "github.com/rancher/api-filter-proxy/filters/http"
+	//to register auth filter
+	_ "github.com/rancher/api-filter-proxy/filters/auth"
 	"github.com/rancher/api-filter-proxy/model"
 	"github.com/rancher/api-filter-proxy/util"
 	"github.com/urfave/cli"
@@ -164,7 +166,7 @@ func ProcessPreFilters(path string, api string, body map[string]interface{}, hea
 			log.Errorf("Error response %v - %v while processing the filter %v", responseData.Status, responseData.Body, filterData)
 			svcErr := model.ProxyError{
 				Status:  strconv.Itoa(responseData.Status),
-				Message: fmt.Sprintf("Error response while processing the filter %v", filterData.Endpoint),
+				Message: fmt.Sprintf("Error response while processing the filter name %v, endpoint %v", filterData.Name, filterData.Endpoint),
 			}
 
 			return inputBody, inputHeaders, "", svcErr

@@ -33,6 +33,7 @@ func writeError(w http.ResponseWriter, svcError model.ProxyError) {
 		w.Write([]byte(svcError.Message))
 		return
 	}
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 
 	jsonStr, err := json.Marshal(svcError)
